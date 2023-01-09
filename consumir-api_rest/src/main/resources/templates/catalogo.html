@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="layaout/layaout :: head"></head>
+
+<body onload="mostrar()">
+    <header th:replace="layaout/layaout :: header"></header>
+
+    <div class="container p-5">
+        <div class="wrapper">
+            <div th:if="${error}">
+                <h3 class="display-3 text-center"> ¡ No hay películas !</h3>
+            </div>
+            <div th:if="${success}">
+                <h1 class="text-center fw-light pb-3"> Estas son Nuestras Películas en el Género de <span th:text="${genero}"></span> </h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-6 col-lg-4 mb-4" th:each="item : ${peliculas}">
+                    <div class="card text-white card-has-bg click-col cardPelicula" th:style="'background-image:url('+ @{/api/uploads/} + ${item.caratula} +'); '">
+                        <div class="card-img-overlay d-flex flex-column">
+                            <div class="card-body" id="cardBody">
+                                <small class="card-meta mb-2" th:text="${item.genero}"></small>
+                                <h4 class="card-title mt-0 "><a class="text-white" herf="#"
+                                        th:text="${item.nombre}"></a>
+                                </h4>
+                                <small><i class="far fa-clock"></i> October 15, 2020</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div th:if="${success}">
+                        <h5 class="text-center fw-light mt-3"> <strong th:text="${listSize}"></strong> Resultados de la busqueda </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrar() {
+            
+            var error = "[[${error}]]";
+            
+            if ( error ) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: "Oops..!",
+                    text: error,
+                })
+            }
+        }
+    </script>
+
+    <footer th:replace="layaout/layaout :: footer"></footer>
+</body>
+
+</html>

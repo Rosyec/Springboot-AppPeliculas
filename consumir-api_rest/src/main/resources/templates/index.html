@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlnsth="http://www.thymeleaf.org">
+
+<head th:replace="layaout/layaout :: head"></head>
+
+<body onload="mostrar()">
+    <header th:replace="layaout/layaout :: header"></header>
+
+    <div class="container">
+
+        <section class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center mb-5">
+                        <h1 class="display-4">Encuentra las Mejores Películas Aquí</h1>
+                        <p class="lead">Lo último en cartelera 2022. </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4" th:each="item : ${peliculas}" data-bs-toggle="modal" th:onclick="getId( this.getAttribute( 'data-nombre' ) )"  th:data-nombre="${item.nombre}" data-bs-target="#exampleModal">
+                        <form th:action="@{/api/form}" method="get">
+                            <div class="card text-white card-has-bg click-col cardPelicula" id="cardPelicula" 
+                                th:style="'background-image:url('+ @{/api/uploads/} + ${item.caratula} +'); '">
+                                <!-- th:style="'background-image:url(' + ${item.caratula} + ');'" -->
+                                <!-- th:style="'background:url('+ @{/api/uploads/} + ${item.caratula} +') no-repeat center center; '" -->
+                                <div class="card-img-overlay d-flex flex-column">
+                                    <div class="card-body" id="cardBody">
+                                        <small class="card-meta mb-2" th:text="${item.genero}"></small>
+                                        <h4 class="card-title mt-0 "><a class="text-white" herf="#"
+                                                th:text="${item.nombre}"></a></h4>
+                                        <small><i class="far fa-clock"></i> October 15, 2020</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4 text-dark text-center">
+                        <div class="card text-white card-has-bg click-col cardPelicula" onclick="submit()"
+                            style=" cursor: pointer; border-style: dashed; border-width: 6px; border-color: rgb(8, 190, 190); background-color: rgb(255, 255, 255);">
+                            <div class="card-img-overlay d-flex flex-column">
+                                <div class="card-body mt-5">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <div>
+                                                <img th:src="@{/img/add.png}" style="width: 20vh;" alt="">
+                                                <h4 class="card-title mt-0 "><a style="color: rgb(8, 190, 190);"
+                                                        herf="#">Agregar película</a></h4>
+                                                <a hidden id="sendToForm" th:href="@{/api/form}"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="containder">
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script>
+
+        function submit() {
+            var btn = document.getElementById("sendToForm");
+            btn.click();
+        }
+        
+        function getId(nombre){
+            console.log('Nombre: ' + nombre);
+            var nombreModal = document.getElementById("exampleModalLabel");
+            nombreModal.textContent = nombre;
+        }
+
+        function mostrar() {
+            var success = "[[${success}]]";
+            var error = "[[${error}]]";
+
+            if ( success ) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: "Exito",
+                    text: success,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }else if ( error ) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: "Oops...!",
+                    text: error,
+                })
+            }
+        }
+        
+    </script>
+
+    <footer th:replace="layaout/layaout :: footer"></footer>
+</body>
+
+</html>

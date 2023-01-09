@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="layaout/layaout :: head"></head>
+
+<body onload="mostrar()">
+    <header th:replace="layaout/layaout :: header"></header>
+
+    <div class="container" style="margin-bottom: 200px;">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 mt-5">
+                <div id="card-form" class="card">
+                    <div class="card-header">
+                        <h1 class="fw-light" th:text="${titulo}"></h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <form th:action="@{/api/form}" th:object="${pelicula}" method="post"
+                                    enctype="multipart/form-data">
+
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-md-12">
+                                            <label for="nombre" th:text="${'Nombre'}"></label>
+                                            <div>
+                                                <input class="form-control" id="nombre" type="text" th:field="*{nombre}"
+                                                    required autofocus="true">
+                                            </div>
+                                            <div class="alert alert-danger" th:if="${#fields.hasErrors('nombre')}"
+                                                th:errors="*{nombre}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-md-12">
+                                            <label for="genero" th:text="${'Genero'}"></label>
+                                            <div>
+                                                <select class="form-select" id="genero" th:field="*{genero}" required>
+                                                    <option value=""> -- Seleccionar</option>
+                                                    <option th:each="item : ${generos}" th:text="${item}"
+                                                        th:value="${item}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-danger" th:if="${#fields.hasErrors('genero')}"
+                                                th:errors="*{genero}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-md-12">
+                                            <label for="caratula" th:text="${'Caratula'}"></label>
+                                            <div>
+                                                <input class="form-control" name="file" id="caratula" accept="image/png,image/jpeg" type="file" required>
+                                            </div>
+                                            <div class="alert alert-danger" th:if="${#fields.hasErrors('caratula')}"
+                                                th:errors="*{caratula}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div><input th:value="${titulo}" type="submit" class="btn btn-dark col-12">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrar() {
+            var message = "[[${error}]]";
+            if (message) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: "Oops...!",
+                    text: message,
+                })
+            }
+        }
+    </script>
+
+    <footer th:replace="layaout/layaout :: footer"></footer>
+</body>
+
+</html>
